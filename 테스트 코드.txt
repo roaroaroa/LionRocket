@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="DemoApp">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="LionRocket입니다.">
+    <meta name="author" content="정보시스템">
+
+    <meta property="og:url" content="https://arudinossssss.firebaseapp.com/">
+    <meta property="og:title" content="LionRocket">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://arudinossssss.firebaseapp.com/img/sum.jpg">
+  <meta property="og:description" content="한양대학교 학생식당 혼잡도">
+     <style>
+       #map {
+
+         height: 400px;
+        width: none;
+       }
+
+    </style>
+
+
+
+
+    <title>한양대학교 학생식당 혼잡도</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <!-- Plugin CSS -->
+    <link href="vendor/magnific-popup/magnific-popup.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="css/creative.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body id="page-top">
+
+   
+
+<h1> Realtime database</h1>
+
+
+    <div class="container" ng-controller="DemoCtrl">
+        <h3 >sensor value: {{value}}</h3>
+    </div>
+ 
+
+
+     
+                    
+                    
+
+   <!--angularjs-->
+   <script src="https://code.angularjs.org/1.2.6/angular.min.js"></script>
+   <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+   <script src="https://cdn.firebase.com/libs/angularfire/0.5.0/angularfire.min.js"></script>
+
+
+  <script type="text/javascript">
+    var myApp = angular.module('DemoApp', ['firebase']);
+
+    function DemoCtrl($scope, $firebase) {
+        
+        
+        
+        
+        $scope.firebaseRef = new Firebase("https://arduino2-c0fe0.firebaseio.com/temperature" );
+        $scope.temperatures = $firebase($scope.firebaseRef);
+        var firebaseRef = new Firebase("https://arduino2-c0fe0.firebaseio.com/temperature" );
+      
+        $scope.firebaseRef1 = new Firebase("https://arduino2-c0fe0.firebaseio.com/Lion_Data" );
+        $scope.temperatures1 = $firebase($scope.firebaseRef1);
+        var firebaseRef1 = new Firebase("https://arduino2-c0fe0.firebaseio.com/Lion_Data" );
+       
+        $scope.firebaseRef2 = new Firebase("https://arduino2-c0fe0.firebaseio.com/menu" );
+        $scope.temperatures2 = $firebase($scope.firebaseRef2);
+        var firebaseRef2 = new Firebase("https://arduino2-c0fe0.firebaseio.com/menu" );
+
+
+     var first= firebaseRef.on('child_added',function(data,preChildKey){
+       
+           
+         var newtemp= data.val().value;
+
+          //console.log(newtemp);
+         
+          $scope.value=newtemp;
+
+ 
+ });
+
+      firebaseRef1.on('child_added',function(data,preChildKey){
+          
+          
+          var newtemp2= data.val();
+
+          console.log(newtemp2.sensor_value);
+        console.log(newtemp2.congestion_ratio);
+        console.log(newtemp2.post_time.Time_Key);
+
+          $scope.sensor_value=newtemp2.sensor_value;
+        $scope.congestion_ratio=newtemp2.congestion_ratio;
+           
+        $scope.Time_Key=newtemp2.post_time.Time_Key;
+ });
+        
+        firebaseRef2.on('child_added',function(data,preChildKey){
+          
+          
+          var newtemp3= data.val();
+
+         //console.log(newtemp3.NEW_TEST);
+        
+          $scope.menu1=(newtemp3.NEW_TEST);
+            
+            
+       
+ });
+    
+}
+  </script>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="vendor/scrollreveal/scrollreveal.min.js"></script>
+    <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="js/creative.min.js"></script>
+
+
+
+</body>
+
+</html>
